@@ -13,6 +13,10 @@ import os
 import dj_database_url
 from pathlib import Path
 
+import sys
+print("DATABASE_URL:", os.environ.get('DATABASE_URL'), file=sys.stderr)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,10 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3b1tdtnb5*ve)i^5*p#o)d&#jpz@q1!t7qd4$qp$^=+@6u030k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
 
 ALLOWED_HOSTS = ['.vercel.app']
-
 
 # Application definition
 
