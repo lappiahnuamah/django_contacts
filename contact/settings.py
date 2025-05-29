@@ -12,9 +12,24 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import dj_database_url
 from pathlib import Path
-
 import sys
-print("DATABASE_URL:", os.environ.get('DATABASE_URL'), file=sys.stderr)
+
+# DATABASE CONFIGURATION
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+# Debug print (visible in Vercel logs)
+print(">>> DATABASE_URL =", DATABASE_URL, file=sys.stderr)
+
+# Assertion for safer debugging
+assert DATABASE_URL, "DATABASE_URL environment variable is not set."
+
+# Normalize scheme if needed
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgres://")
+
+DATABASES = {
+    'default': dj_database_url.parse(DATABASE_URL)
+}
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,7 +99,7 @@ WSGI_APPLICATION = 'contact.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+# DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'NAME': 'postgres',
@@ -93,8 +108,8 @@ DATABASES = {
     #     'HOST': 'localhost',
     #     'PORT': '5432',
     # }
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-}
+#     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+# }
 
 
 # Password validation
